@@ -1,4 +1,4 @@
-const { uploadFile, getSignedUrlAWS } = require("../s3/s3");
+const { uploadFile } = require("../s3/s3");
 
 const fs = require('fs');
 const util = require('util');
@@ -46,7 +46,9 @@ const uploadImage = async(req, res) => {
 
         const fileDB = await fileObject.save();
 
-        await removeFile(file.path)
+        removeFile(file.path)
+        .then(resp=> console.log(resp))
+        .catch(err=> console.log(err))
 
         if (folderID !== "no-folder") {
 
@@ -80,6 +82,7 @@ const uploadImage = async(req, res) => {
         console.log(error);
         res.status(500).json({
             res: false,
+            error,
             msj: 'there is a problem with the server, talk to the administrator'
         })
     }

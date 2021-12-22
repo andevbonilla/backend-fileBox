@@ -120,7 +120,10 @@ const deleteFile = async(req, res) => {
         const deletedFile = await fileModel.findByIdAndRemove(fid, {new:true})
 
         // delete the file in AWS
-        await deleteFileAWS(deletedFile.aws_key)
+        deleteFileAWS(deletedFile.aws_key)
+        .then(result => console.log(result))
+        .catch(err=> console.log(err))
+        
 
         // delete from the folders
         const foldersWithFile = await folderModel.find({files:fid})

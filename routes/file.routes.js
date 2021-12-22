@@ -13,7 +13,6 @@ const storage = multer.diskStorage({
         cb(null, 'uploads')
     },
     filename: function(req, file, cb){
-        console.log(file.mimetype.split('/').reverse()[0],"lll")
         cb(null, uuidv4() + '.' + file.mimetype.split('/').reverse()[0])
     }
 })

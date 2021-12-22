@@ -13,7 +13,7 @@ const limiter = rateLimit({
 });
 
 // the urls that can make requests to this server
-const linkList = ['http://localhost:4200'];
+const linkList = ['http://localhost:4200', 'https://a-n-d-r-e-s-b-o-n-i-l-l-a.github.io'];
 
 // start the app with express
 const app = express();
@@ -38,6 +38,6 @@ app.use('/api/folder', require('./routes/folder.routes'));
 app.use('/api/search', require('./routes/search.routes'));
 
 // start the server
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
     console.log('escuchando puerto 3000'); 
 })

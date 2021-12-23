@@ -6,9 +6,6 @@ const fileModel = Schema({
         require: [true, 'the name is required'],
         trim: true
     },
-    type: {
-        type: String,
-    },
     aws_key:{
         type: String,
         require: [true, 'the aws key is required']

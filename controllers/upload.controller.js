@@ -1,54 +1,24 @@
 const { uploadFile } = require("../s3/s3");
-
-const fs = require('fs');
-const util = require('util');
 const fileModel = require("../models/file.model");
 const folderModel = require("../models/folder.model");
-const removeFile = util.promisify(fs.unlink);
 
 const uploadImage = async(req, res) => {
 
     try {
-
+            
         const file = req.file;
 
         const folderID = req.params.fid;
 
-        const resultAWS = await uploadFile(file)
-
-        const typeOfFile = resultAWS.Location.split('.').reverse()[0]
-
-        let typeFile;
-
-        if (typeOfFile === 'png' || typeOfFile === 'jpeg' || typeOfFile === 'jpg' || typeOfFile === 'gif') {
-            typeFile = 'image'
-        }
-
-        if (typeOfFile === 'mp4') {
-            typeFile = 'video'
-        }
-
-        if (typeOfFile === 'mp3') {
-            typeFile = 'audio'
-        }
-
-        if (typeOfFile === 'pdf') {
-            typeFile = 'pdf'
-        }
-
+        // const resultAWS = await uploadFile(file)
 
         const fileObject = new fileModel({
             name: file.originalname,
             user: req.params.uid,
-            type: typeFile,
-            aws_key: resultAWS.Key
+            aws_key: file.key
         });
 
         const fileDB = await fileObject.save();
-
-        removeFile(file.path)
-        .then(resp=> console.log(resp))
-        .catch(err=> console.log(err))
 
         if (folderID !== "no-folder") {
 
@@ -60,7 +30,7 @@ const uploadImage = async(req, res) => {
                 })
             }
             
-            folderDB.files.push(fileDB._id); 
+            folderDB.files.push(fileDB._id);  
 
             const newFolder = await folderModel.findByIdAndUpdate(folderID, folderDB,{new:true}).populate({path: 'files', model: 'file'})
 

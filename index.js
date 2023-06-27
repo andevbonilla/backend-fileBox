@@ -13,7 +13,7 @@ const limiter = rateLimit({
 });
 
 // the urls that can make requests to this server
-const linkList = ['https://a-n-d-r-e-s-b-o-n-i-l-l-a.github.io'];
+const linkList = ['https://filebox.netlify.app'];
 
 // start the app with express
 const app = express();
